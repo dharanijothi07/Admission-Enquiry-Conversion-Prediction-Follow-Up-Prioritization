@@ -7,5 +7,22 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true
+  },
+  preview: {
+    port: 5173,
+    host: '0.0.0.0',
+    allowedHosts: true
+  },
+  build: {
+    chunkSizeWarningLimit: 1200,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          charts: ['recharts'],
+          icons: ['lucide-react']
+        }
+      }
+    }
   }
 })

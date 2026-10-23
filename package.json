@@ -3,10 +3,14 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "bin": {
+    "uvicorn": "./bin/uvicorn.js"
+  },
   "scripts": {
     "dev": "node ./node_modules/vite/bin/vite.js",
-    "build": "node ./node_modules/typescript/bin/tsc -b && node ./node_modules/vite/bin/vite.js build",
-    "preview": "node ./node_modules/vite/bin/vite.js preview"
+    "build": "node ./node_modules/typescript/bin/tsc -b && node ./node_modules/vite/bin/vite.js build && (pip3 install -r requirements.txt || pip install -r requirements.txt || true)",
+    "preview": "node ./node_modules/vite/bin/vite.js preview",
+    "start": "node ./node_modules/vite/bin/vite.js preview --host 0.0.0.0 --port $PORT"
   },
   "dependencies": {
     "lucide-react": "^1.16.0",
