@@ -1,0 +1,157 @@
+{
+  "is_synthetic_benchmark": true,
+  "disclaimer": "ACADEMIC RESEARCH PROTOTYPE: Evaluated on reproducible synthetic data for college final-year project demonstration. Results do NOT represent live operational college performance or audited institutional metrics.",
+  "model_version": "v1.0.0",
+  "champion_algorithm": "Random Forest Classifier",
+  "baseline_algorithm": "Logistic Regression",
+  "target_definition": "converted_in_window",
+  "time_window_days": 45,
+  "time_window_description": "Binary conversion target: 1 = Candidate completed seat enrollment and paid admission fee within 45 days of initial enquiry; 0 = Did not enroll / dropped out.",
+  "evaluation_strategy": "Temporal Cycle Holdout (Train: 2024-2025 Cycles, Test: 2026 Cycle)",
+  "dataset_split": {
+    "total_records": 6000,
+    "train_records": 4000,
+    "test_records": 2000
+  },
+  "champion_metrics": {
+    "model_name": "Random Forest Classifier (Champion)",
+    "accuracy": 0.728,
+    "precision": 0.5862,
+    "recall": 0.6558,
+    "f1_score": 0.619,
+    "roc_auc": 0.7773,
+    "pr_auc": 0.6486,
+    "brier_score": 0.1881,
+    "confusion_matrix": {
+      "true_positive": 442,
+      "false_positive": 312,
+      "false_negative": 232,
+      "true_negative": 1014
+    },
+    "calibration_curve": [
+      {
+        "bin": "Bin 1",
+        "predictedProb": 0.179,
+        "trueFraction": 0.08
+      },
+      {
+        "bin": "Bin 2",
+        "predictedProb": 0.295,
+        "trueFraction": 0.159
+      },
+      {
+        "bin": "Bin 3",
+        "predictedProb": 0.487,
+        "trueFraction": 0.366
+      },
+      {
+        "bin": "Bin 4",
+        "predictedProb": 0.7,
+        "trueFraction": 0.608
+      },
+      {
+        "bin": "Bin 5",
+        "predictedProb": 0.835,
+        "trueFraction": 0.864
+      }
+    ]
+  },
+  "baseline_metrics": {
+    "model_name": "Logistic Regression (Baseline)",
+    "accuracy": 0.713,
+    "precision": 0.5611,
+    "recall": 0.681,
+    "f1_score": 0.6153,
+    "roc_auc": 0.7776,
+    "pr_auc": 0.6539,
+    "brier_score": 0.1897,
+    "confusion_matrix": {
+      "true_positive": 459,
+      "false_positive": 359,
+      "false_negative": 215,
+      "true_negative": 967
+    },
+    "calibration_curve": [
+      {
+        "bin": "Bin 1",
+        "predictedProb": 0.148,
+        "trueFraction": 0.058
+      },
+      {
+        "bin": "Bin 2",
+        "predictedProb": 0.29,
+        "trueFraction": 0.21
+      },
+      {
+        "bin": "Bin 3",
+        "predictedProb": 0.494,
+        "trueFraction": 0.309
+      },
+      {
+        "bin": "Bin 4",
+        "predictedProb": 0.701,
+        "trueFraction": 0.528
+      },
+      {
+        "bin": "Bin 5",
+        "predictedProb": 0.867,
+        "trueFraction": 0.81
+      }
+    ]
+  },
+  "feature_importances": [
+    {
+      "feature": "campus_visit_attended",
+      "importance": 0.2237
+    },
+    {
+      "feature": "parent_accompanied",
+      "importance": 0.1351
+    },
+    {
+      "feature": "engagement_score",
+      "importance": 0.1322
+    },
+    {
+      "feature": "lead_source",
+      "importance": 0.0933
+    },
+    {
+      "feature": "percentage_score",
+      "importance": 0.0857
+    },
+    {
+      "feature": "maths_physics_score",
+      "importance": 0.0796
+    },
+    {
+      "feature": "entrance_percentile",
+      "importance": 0.0713
+    },
+    {
+      "feature": "city",
+      "importance": 0.0518
+    }
+  ],
+  "all_input_features": [
+    "percentage_score",
+    "maths_physics_score",
+    "entrance_percentile",
+    "engagement_score",
+    "program",
+    "lead_source",
+    "city",
+    "qualifying_exam",
+    "category",
+    "budget_range",
+    "campus_visit_attended",
+    "parent_accompanied",
+    "brochure_downloaded",
+    "hostel_required",
+    "bus_transport_required"
+  ],
+  "safety_governance": {
+    "auto_retraining_allowed": false,
+    "policy": "Never automatically retrain on live or unverified records without supervisor verification."
+  }
+}

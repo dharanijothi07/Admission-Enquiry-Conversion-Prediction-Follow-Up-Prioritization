@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+backend/.venv/
+.venv/
+venv/
+env/
+
+# Production build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Python bytecode & test caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment secrets
+.env
+!.env.example
+*.local
+
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Archive files
+*.zip
