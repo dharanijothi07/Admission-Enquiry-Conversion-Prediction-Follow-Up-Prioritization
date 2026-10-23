@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if command -v node >/dev/null 2>&1; then
+  if [ -f "$SCRIPT_DIR/bin/uvicorn.cjs" ]; then
+    exec node "$SCRIPT_DIR/bin/uvicorn.cjs" "$@"
+  elif [ -f "$SCRIPT_DIR/uvicorn.cjs" ]; then
+    exec node "$SCRIPT_DIR/uvicorn.cjs" "$@"
+  fi
+fi
+if command -v python3 >/dev/null 2>&1; then
+  exec python3 -m uvicorn "$@"
+elif command -v python >/dev/null 2>&1; then
+  exec python -m uvicorn "$@"
+fi
