@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: admission-enquiry-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt && python -m app.ml.train
+    startCommand: alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      - key: DATABASE_URL
+        fromDatabase:
+          name: admissions-db
+          property: connectionString
+      - key: CORS_ORIGINS
+        value: https://admission-enquiry-conversion-prediction-follow-up-r01wjziw5.vercel.app,https://admission-enquiry-conversion-predic-smoky.vercel.app,http://localhost:5173
+      - key: ENABLE_DEMO_ENDPOINTS
+        value: "true"
+
+databases:
+  - name: admissions-db
+    plan: free
