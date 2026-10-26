@@ -16,7 +16,12 @@ import type {
  * The backend address comes from the VITE_API_BASE_URL environment variable.
  * Locally it falls back to http://localhost:8000.
  */
-export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8000").replace(/\/+$/, "");
+const rawApiUrl =
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.DEV ? "http://localhost:8000" : "");
+
+export const API_BASE_URL = rawApiUrl.replace(/\/+$/, "");
 
 export class ApiError extends Error {
   status: number;
@@ -45,12 +50,14 @@ function describeError(body: unknown, fallback: string): string {
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}/api${path}`, {
+    const url = API_BASE_URL ? `${API_BASE_URL}/api${path}` : `/api${path}`;
+    response = await fetch(url, {
       ...init,
       headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
     });
   } catch {
-    throw new ApiError(`Cannot reach the API at ${API_BASE_URL}. Check that the backend is running.`, 0);
+    const target = API_BASE_URL || window.location.origin;
+    throw new ApiError(`Cannot reach the API at ${target}. Check that the backend is running and CORS is configured.`, 0);
   }
   if (response.status === 204) return undefined as T;
   const body: unknown = await response.json().catch(() => null);

@@ -37,8 +37,8 @@ def upgrade() -> None:
         sa.Column("status", sa.String(length=20), nullable=False),
         sa.Column("notes", sa.Text(), nullable=True),
         sa.Column("conversion_probability", sa.Float(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_enquiries_course_interest"), "enquiries", ["course_interest"])
@@ -52,7 +52,7 @@ def upgrade() -> None:
         sa.Column("channel", sa.String(length=20), nullable=False),
         sa.Column("notes", sa.Text(), nullable=True),
         sa.Column("next_followup_date", sa.Date(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
         sa.ForeignKeyConstraint(["enquiry_id"], ["enquiries.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )

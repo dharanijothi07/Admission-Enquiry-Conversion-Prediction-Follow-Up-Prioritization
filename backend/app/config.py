@@ -13,9 +13,14 @@ class Settings(BaseSettings):
     )
 
     # Example value only. Put your real connection string in backend/.env or in Render.
-    database_url: str = "postgresql://admissions:change_me@localhost:5432/admissions_db"
+    database_url: str = "sqlite:///./admissions.db"
     # Comma-separated list of frontend URLs allowed to call this API (CORS).
-    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+    cors_origins: str = (
+        "http://localhost:5173,"
+        "http://127.0.0.1:5173,"
+        "https://admission-enquiry-conversion-prediction-follow-up-r01wjziw5.vercel.app,"
+        "https://admission-enquiry-conversion-predic-smoky.vercel.app"
+    )
     # Turns the "Load demo data" endpoint on or off.
     enable_demo_endpoints: bool = True
     # Where the trained ML model files are stored.

@@ -7,7 +7,7 @@ router = APIRouter(tags=["health"])
 
 
 @router.get("/health")
-def health() -> dict:
+async def health() -> dict:
     """Used by Render's health check and by the frontend's 'API status' badge."""
     db_status = "connected"
     try:
