@@ -1,6 +1,7 @@
 import type { PriorityLabel } from "../api/types";
 
 export function labelize(value: string): string {
+  if (!value) return "";
   const s = value.replace(/_/g, " ");
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -32,74 +33,79 @@ export function OptionList({ values }: { values: readonly string[] }) {
 }
 
 const badgeStyles: Record<PriorityLabel, string> = {
-  High: "bg-forest text-white",
-  Medium: "bg-saffron-tint text-saffron",
-  Low: "bg-line/70 text-muted",
-  Closed: "border border-line text-muted",
+  High: "bg-rose-50 text-rose-700 border border-rose-200",
+  Medium: "bg-amber-50 text-amber-700 border border-amber-200",
+  Low: "bg-slate-100 text-slate-700 border border-slate-200",
+  Closed: "bg-gray-100 text-gray-500 border border-gray-200",
 };
 
 export function PriorityBadge({ label }: { label: PriorityLabel }) {
   return (
-    <span className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${badgeStyles[label]}`}>{label}</span>
+    <span
+      className={`inline-block rounded-md px-2.5 py-0.5 text-[11px] font-bold ${
+        badgeStyles[label] || badgeStyles.Medium
+      }`}
+    >
+      {label}
+    </span>
   );
 }
 
 export function ProbabilityBar({ value }: { value: number | null }) {
   const width = Math.max(0, Math.min(1, value ?? 0)) * 100;
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2.5">
       <div
-        className="h-1.5 w-full min-w-16 rounded-full bg-line"
+        className="h-2 w-full min-w-16 rounded-full bg-emerald-100/70 overflow-hidden"
         role="img"
         aria-label={`${pct(value)} likely to enrol`}
       >
-        <div className="h-full rounded-full bg-forest" style={{ width: `${width}%` }} />
+        <div className="h-full rounded-full bg-[#1b7a63] transition-all" style={{ width: `${width}%` }} />
       </div>
-      <span className="w-9 shrink-0 text-right text-xs tabular-nums text-muted">{pct(value)}</span>
+      <span className="w-10 shrink-0 text-right text-xs font-bold tabular-nums text-gray-700">
+        {pct(value)}
+      </span>
     </div>
   );
 }
 
+const statusStyles: Record<string, string> = {
+  new: "bg-blue-50 text-blue-700 border-blue-200",
+  contacted: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  visited: "bg-purple-50 text-purple-700 border-purple-200",
+  applied: "bg-amber-50 text-amber-700 border-amber-200",
+  admitted: "bg-green-50 text-green-700 border-green-200",
+  lost: "bg-gray-100 text-gray-600 border-gray-200",
+};
+
 export function StatusPill({ status }: { status: string }) {
-  return <span className="rounded border border-line px-2 py-0.5 text-xs text-ink">{labelize(status)}</span>;
+  const norm = status.toLowerCase();
+  return (
+    <span
+      className={`inline-block rounded-md border px-2 py-0.5 text-[11px] font-semibold ${
+        statusStyles[norm] || "bg-gray-50 text-gray-700 border-gray-200"
+      }`}
+    >
+      {labelize(status)}
+    </span>
+  );
 }
 
 export function ErrorNotice({ message }: { message: string }) {
   return (
-    <div role="alert" className="rounded-md border border-brick/30 bg-brick-tint px-3 py-2 text-sm text-brick">
+    <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs font-medium text-rose-800">
       {message}
     </div>
   );
 }
 
-export function Loading({ text = "Loading…" }: { text?: string }) {
-  return <p className="py-8 text-sm text-muted">{text}</p>;
-}
-
-export interface BarRow {
-  label: string;
-  value: number;
-  note?: string;
-}
-
-export function BarList({ rows }: { rows: BarRow[] }) {
-  const max = Math.max(1, ...rows.map((r) => r.value));
+export function Loading({ text = "Loading..." }: { text?: string }) {
   return (
-    <ul className="space-y-2.5">
-      {rows.map((r) => (
-        <li key={r.label} className="text-sm">
-          <div className="mb-1 flex justify-between gap-2">
-            <span>{r.label}</span>
-            <span className="tabular-nums text-muted">
-              {r.value}
-              {r.note ? ` · ${r.note}` : ""}
-            </span>
-          </div>
-          <div className="h-1.5 rounded-full bg-line">
-            <div className="h-full rounded-full bg-forest/80" style={{ width: `${(r.value / max) * 100}%` }} />
-          </div>
-        </li>
-      ))}
-    </ul>
+    <div className="flex items-center justify-center py-16">
+      <div className="flex items-center gap-3 text-sm text-gray-500">
+        <div className="h-4 w-4 animate-spin rounded-full border-2 border-emerald-600 border-t-transparent" />
+        <span>{text}</span>
+      </div>
+    </div>
   );
 }
